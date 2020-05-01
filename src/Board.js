@@ -20,6 +20,22 @@ export default class Board extends React.Component {
       inProgress: React.createRef(),
       complete: React.createRef(),
     }
+
+    var drake = Dragula({
+      isContainer: function (el) {
+        return el.classList.contains('Card Card-grey') || el.classList.contains('Card Card-blue') || el.classList.contains('Card Card-green') || el.classList.contains('Swimlane-dragColumn');
+      },
+      accepts: function (el, target, source, sibling) {
+        return target.classList.contains('Swimlane-dragColumn');
+      }
+    });
+
+    drake.on('drop', function (el, target, source, sibling) {
+      el.classList.remove(...el.className.split(' '))
+      el.classList.add(...sibling.className.split(' '))
+      return true;
+    });
+
   }
   getClients() {
     return [
@@ -75,4 +91,5 @@ export default class Board extends React.Component {
       </div>
     );
   }
+
 }
